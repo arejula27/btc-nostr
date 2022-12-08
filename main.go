@@ -7,27 +7,35 @@ import (
 
 func main() {
 
-	interval := time.Second * 30
+	interval := time.Second * 15
+	timeout := time.Second * 5
 
-	rpcCli, err := newRpcClient("localhost", 8332, "bitcoin", "bitcoin", false, interval)
+	rpcCli, err := newRpcClient("localhost", 8332, "bitcoin", "bitcoin", false, timeout)
 	if err != nil {
 		log.Fatal(err)
 
 	}
+
+	bit := NewBitcoinCli(rpcCli)
 	cb := func() {
 
-		hash, err := getBestBlockhash(rpcCli)
+		hash, err := bit.getBestBlockhash()
 		if err != nil {
 			log.Fatal("Can't obtain best block hash, error: ", err)
 
 		}
-		log.Println("Best block hash ", hash)
-		block, err := getBlockheader(rpcCli, hash)
-		if err != nil {
-			log.Fatal("Can't obtain block header, error: ", err)
+
+		if hash != bit.lastBlock {
+			bit.lastBlock = hash
+			block, err := bit.getBlockheader(hash)
+			if err != nil {
+				log.Fatal("Can't obtain block header, error: ", err)
+
+			}
+			log.Println("Best block hash ", hash)
+			log.Println("Block height: ", block.Height)
 
 		}
-		log.Println("Block height: ", block.Height)
 
 	}
 
