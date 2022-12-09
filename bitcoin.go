@@ -35,7 +35,7 @@ func NewBitcoinCli(client *rpcClient) *bitcoinCli {
 
 func (b *bitcoinCli) getBestBlockhash() (bestBlockHash string, err error) {
 	r, err := b.client.call("getbestblockhash", nil)
-	if err = handleError(err, &r); err != nil {
+	if err = handleRpcError(err, &r); err != nil {
 		return
 	}
 	err = json.Unmarshal(r.Result, &bestBlockHash)
@@ -44,7 +44,7 @@ func (b *bitcoinCli) getBestBlockhash() (bestBlockHash string, err error) {
 
 func (b *bitcoinCli) getBlockheader(blockHash string) (*BlockHeader, error) {
 	r, err := b.client.call("getblockheader", []string{blockHash})
-	if err = handleError(err, &r); err != nil {
+	if err = handleRpcError(err, &r); err != nil {
 		return nil, err
 	}
 

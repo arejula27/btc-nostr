@@ -1,7 +1,7 @@
 package main
 
 // handleError handle error returned by client.call
-func handleError(err error, r *rpcResponse) error {
+func handleRpcError(err error, r *rpcResponse) error {
 	if err != nil {
 		return err
 	}
