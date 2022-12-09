@@ -10,6 +10,7 @@ require (
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/nbd-wtf/go-nostr v0.8.2 // indirect
+	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/valyala/fastjson v1.6.3 // indirect
 	golang.org/x/exp v0.0.0-20221106115401-f9659909a136 // indirect
 )

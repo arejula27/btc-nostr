@@ -9,24 +9,22 @@ import (
 )
 
 func main() {
+	conf, err := loadConfiguration()
+	if err != nil {
+		log.Fatal("Can't load configuration, error: ", err)
 
-	nostrConf := NostrConf{
-		relays:  []string{"wss://nostr-relay.wlvs.space"},
-		privkey: "",
 	}
+
+	//Nostr
+	nostrConf := conf.Nostr
 	nostrCtrl := NewNostrController(nostrConf)
 
+	//Bitcoin
+	bit := NewBitcoinCli(conf.Bitcoin)
+
+	//Watchdog
 	interval := time.Second * 15
-	timeout := time.Second * 5
-
-	rpcCli, err := newRpcClient("localhost", 8332, "bitcoin", "bitcoin", false, timeout)
-
-	if err != nil {
-		log.Fatal(err)
-
-	}
-
-	bit := NewBitcoinCli(rpcCli)
+	//cb is the function which will be call each time the interval ends
 	cb := func() {
 
 		hash, err := bit.getBestBlockhash()
@@ -55,7 +53,5 @@ func main() {
 
 	w := NewWatchdog(interval, cb)
 	w.Run()
-
-	time.Sleep(time.Second * 10)
 
 }

@@ -1,0 +1,9 @@
+[Bitcoin]
+NodeUrl= ""
+Port= 
+RpcUser= ""
+Password= ""
+SSLmode= false
+[Nostr]
+Relays= [""]
+Privkey= ""

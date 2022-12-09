@@ -2,7 +2,17 @@ package main
 
 import (
 	"encoding/json"
+	"log"
+	"time"
 )
+
+type BitcoinConf struct {
+	NodeUrl  string
+	Port     int
+	RpcUser  string
+	Password string
+	SSLmode  bool
+}
 
 type BlockHeader struct {
 	Hash              string
@@ -27,7 +37,16 @@ type bitcoinCli struct {
 	lastBlock string
 }
 
-func NewBitcoinCli(client *rpcClient) *bitcoinCli {
+const TIMEOUT = time.Second * 5
+
+func NewBitcoinCli(conf BitcoinConf) *bitcoinCli {
+
+	client, err := newRpcClient(conf.NodeUrl, conf.Port, conf.RpcUser, conf.Password, conf.SSLmode, TIMEOUT)
+
+	if err != nil {
+		log.Fatal(err)
+
+	}
 	return &bitcoinCli{
 		client: client,
 	}

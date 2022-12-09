@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/nbd-wtf/go-nostr"
@@ -14,9 +15,9 @@ type NotrController struct {
 }
 
 type NostrConf struct {
-	relays  []string
-	pubkey  string
-	privkey string
+	Relays  []string
+	Pubkey  string
+	Privkey string
 }
 
 type NostrEvent nostr.Event
@@ -42,10 +43,16 @@ func NewNostrController(conf NostrConf) *NotrController {
 
 	// subscribe to relay
 	pool := nostr.NewRelayPool()
-	pool.SecretKey = &conf.privkey
+	pool.SecretKey = &conf.Privkey
+	pubkey, err := nostr.GetPublicKey(conf.Privkey)
+	if err != nil {
+		log.Fatalln("Can't load secret keys, error: ", err)
+
+	}
+	log.Println("Messages will be published with the public key: ", pubkey)
 
 	// add a nostr relay to our pool
-	for _, relay := range conf.relays {
+	for _, relay := range conf.Relays {
 		errChan := pool.Add(relay, nostr.SimplePolicy{Read: true, Write: true})
 		err := <-errChan
 
