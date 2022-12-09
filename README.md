@@ -11,7 +11,7 @@
 
 Before running the program you must configure it. Change the name of
 `conf.template` to `conf` and edit ALL the fields, if you miss someone the program could fail
-or have a unexpected behaviour. 
+or have an unexpected behaviour. 
 For running use `go build` on the project root directory and then run the executable. At 
 this moment the conf file must be on the same directory as the executable.
 
