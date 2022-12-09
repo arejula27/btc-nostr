@@ -15,7 +15,7 @@ type Config struct {
 
 // init func runs before main, it will load the configuration
 func loadConfiguration() (*Config, error) {
-	data, err := ioutil.ReadFile("/home/arejula27/workspaces/btc-nostr/conf")
+	data, err := ioutil.ReadFile("./conf")
 	if err != nil {
 		fmt.Println(err)
 	}
